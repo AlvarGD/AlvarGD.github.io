@@ -1,0 +1,76 @@
+<head>
+	<title>Idle college-level mathematics.</title>
+    <link rel="stylesheet" href="../Computer modern.css">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({	
+		CommonHTML:{mtextFontInherit: true}
+	});
+	</script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async 
+	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+	<h1>Welcome to the game!</h1>
+	<a href="../Index.html"> My main page, in case you want to go back </a>
+	<div class="pretty">
+		<br>The volume of a slice of a unit sphere with a plane whos shortest vector from the plane to the center is normal to the plane, given the vector 
+		has a length rho is equal to the following double integral, which is then simplified a bit with simple geometry:
+		\[ z:=\sqrt{x^2+y^2},f(x):=\sqrt{1-x^2}=f(-x),D=\{x,y\,|z\le f(\rho)\}, \iint_Df(z)-\rho\;d(x,y) = \int_{-f(\rho)}^{f(\rho)}\int_{-f(y)}^{f(y)}f(z)\;dxdy-\pi f(p)^3 \]
+		<div class="bar"></div>
+	</div>
+	<div class="flexstrip">
+		<br><button onclick="showCircleSlice()" class="flexGrow">
+		Show derivation of the formula for the circle slice
+		</button>
+		<button onclick="showSphereSlice()" class="flexGrow">
+		Show derivation of the formula for the sphere slice
+		</button>
+	</div>
+	<div id="CircleSlice" class="pretty">
+		<br>This one is actually really straight-forward. Newton did this integral a really long time ago, and we can do it really quickly with some u-sub and trigonometric identities:
+		\[ I_2\colon [0,1]\rightarrow [0,\pi],\; I_2(\rho)=\int_{f(-\rho)}^{f(\rho)}f(x)-\rho\,dx=-2\rho f(\rho)+2\int_0^{f(\rho)} \sqrt{1-x^2}\,dx, x:=\sin{u}\Rightarrow u=\sin^{-1}{u},du=-\cos{x}dx\]
+		\[p:=\sin^{-1}{f(\rho)},2\int_0^p\cos(u)^2 du=2\frac{1}{2}\int_0^p 1+\cos(2u)\;du,t=2u\Rightarrow\frac{1}{2}\int_{0}^{2p}1+\cos(t)\;dt=\frac{t+\sin(t)}{2}\bigg|_{t=0}^{2p}=\]
+		\[\sin(2p)/2+2p/2=2\sin(p)\cos(p)/2+p=\cos(p)f(\rho)+p\]	
+		<div class="center resultboxbox"><p class="resultbox">\[I_3(\rho)=\frac{\pi}{3}(2-3\rho+\rho^3)\]</p></div>
+	<div class="bar"></div>
+	</div>
+	<div id="SphereSlice" class="pretty">
+		<br> Nice work! Now we will tackle the third dimension. We can solve this by splitting it into the area of a cone with a spherical bottom and one with a flat bottom, and taking their difference. 
+		Here I will only go over the easier, cylindrical determinant, but it should serve as an example of what using jacobians looks like. Remember tau is just 2 times pi.
+		\[\cos^{-1}\rho:=\alpha,\;I_3=I_{3,1}-I_{3,2},\:I_{3,1}(\rho)=\iiint_D\;d(x,y,z)=
+		\int_0^\alpha\int_0^\tau\int_0^1 r^2\sin{\phi}\;drd\theta d\phi=\frac{\tau}{3}\int_0^\alpha \sin{\phi}\;d\phi=\frac{\tau}{3}\Big|-\cos{\phi}\Big|_{\phi=0}^\alpha=\frac{\tau}{3}(1-\rho)\] 
+		\[I_{3,2}=\iiint_D |\text{J}|d(r,z,\theta)\;\text{J}\begin{pmatrix} x\\y\\z\end{pmatrix}=
+		\begin{bmatrix}r\cos\theta\\r\sin\theta\\\chi\end{bmatrix} \Rightarrow |\text{J}|=
+		\begin{vmatrix} \partial_r x & \partial_\chi x & \partial_\theta x \\ \partial_r y & \partial_\chi y & \partial_\theta y \\ \partial_r z & \partial_\chi z & \partial_\theta z\end{vmatrix}=
+		r\begin{vmatrix}\cos{\theta} & 0 & -\sin{\theta} \\ \sin{\theta} & 0  & \cos{\theta} \\ 0 & 1 & 0 \end{vmatrix}=
+		-r(\cos^2\theta+\sin^2\theta)=-r\]
+		\[\frac{-I_{3,2}}{\rho f(\rho)^2}=\int_0^\tau\int_0^1\int_0^\chi r\,drd\chi d\theta=\int_0^\tau\int_0^1 \frac{r^2}{2}\bigg|_{r=0}^\chi\,d\chi d\theta=\frac{1}{2}\int_0^\tau\int_0^1 \chi^2\,d\chi d\theta=
+		\frac{1}{2}\int_0^\tau\frac{\chi^3}{3}\bigg|_{\chi=0}^1\, d\theta=\frac{1}{2\cdot 3}\int_0^\tau d\theta=\frac{2\cdot\pi}{2\cdot 3}=\frac{\pi}{3}\]
+		\[I_3=I_{3,1}-I_{3,2}=\frac{\pi}{3}(2-2\rho-\rho\sqrt{1-\rho^2}^2)=\frac{\pi}{3}(2-2\rho-\rho+\rho^3)\]
+	<div class="center resultboxbox"><button class="resultbox">\[I_2(\rho)=p-2f(\rho)\rho+\cos(p)f(\rho)\]</button></div>
+	<div class="bar"></div>
+	</div>
+
+	<script>
+	function showCircleSlice(){
+	    var x = document.getElementById("CircleSlice");
+	    if (x.style.display === "none") {
+	        x.style.display = "block";
+	    } else {
+	        x.style.display = "none";
+	    }
+	}
+	function showSphereSlice(){
+	    var x = document.getElementById("SphereSlice");
+	    if (x.style.display === "none") {
+	        x.style.display = "block";
+	    } else {
+	        x.style.display = "none";
+	    }
+	}
+	showCircleSlice();
+	showSphereSlice();
+	</script>
+</body>
+<script>src="IdleScript.js"</script>

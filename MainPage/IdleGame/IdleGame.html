@@ -1,0 +1,118 @@
+<head>
+    <title>IdleGame</title>
+    <link rel="stylesheet" href = "../Computer modern.css">
+</head>
+<body>
+    <div class="center SSback"><p class="SS gone" id="infinitydisplay">Infinity</p></div>
+    <div class="pretty big" id="moneycount">1</div>
+    <div class="flexstrip">
+        <button class = "flexGrow" id="levelbutton" onclick="dlevel()">level</button>
+        <button class = "flexGrow" id="bulkbutton" onclick="dbulk()">bul</button>
+        <button class = "flexGrow" id="timebutton" onclick="dtime()">tim</button>
+        <button class = "flexGrow" id="LPSbutton" onclick="dLPS()">lps</button>
+    </div>
+    <div class="center SSback" id="SSbackbutton"><p class="SS" onclick="dSS()" id="SSbutton">Get to e20 as your first step</p></div>
+    <div class="resultboxbox center"><button class="pretty resultbox" id="timer">1</button></div>
+
+    <div id="stage-1" class="pretty">
+		Uhhhh, lets name the first number go, at least. It seems to be the simpler one to understand. This seems to be a more applied case of analyzing
+        this system and figuring it out instead of being presented with a problem very thorougly explained and working trough it analytically or experimentally. Good luck.
+		<div class="tinyspace"></div><div class="center resultboxbox"><p class="resultbox">Keep researching. Once we have enough data, press the red button.</p></div>
+	</div>
+
+    <div id="stage0" class="pretty gone">
+		Hmmmm, this bar uptop seems to encode information we need to figure out this system. We start with this count, going up by 1 every second. 
+        Lets take some time to analyze what the rest could mean, and if we eventually mess with the parameters we can try to push this system to its limit.<br>
+		<div class="tinyspace"></div><div class="center resultboxbox"><p class="resultbox">Every second, Count+=1</p></div>
+    </div>
+
+	<div id="stage1" class="pretty gone">
+		Ok, this is supermonotone. It is pretty obvious the number besides our count is a raising symbol, so this one on the right side of the equality should
+        have some sort of polynomial growth. Lets try increasing it, using that count we gather. Hopefully the volatility doesn't go beyond the reset we have
+        to do every time we progress with this task. This second blue counter seems to be nothing more than a real-time timer.
+		<div class="tinyspace"></div><div class="center resultboxbox"><p class="resultbox">Money=Count^Level</p></div>
+    </div>
+
+    <div id="stage2" class="pretty gone">
+		This "dx" is most likely how much the count goes up in each interval, so we should make it go up, but given the nature of this polynomial growth it will probably be cheaper
+        than changing the polynomial degree. Small issue, we are limited to 2^2^10 which is about e308. We must take log10(everything), other than count and level, to make it work. 
+        Volatility in this system is pretty convenient for us, which is great news.
+		<div class="tinyspace"></div><div class="center resultboxbox"><p class="resultbox">Count/s=dx. Money=log10(count)*level. On display, 
+            if money is &lt; 6, 10^money, else e(money). if money > 10^20, ee(log10(money)). Every dt upgrade, dt*=0.9
+        </p></div>
+    </div>
+
+    <div id="stage3" class="pretty gone">
+		Taking log10 allows us to go beyond 10^300, which is what we need to do to keep analyzing this complex system. Its almost as if it was asking us to do it, 
+        because this is simplifying the math massively for us! this is fantastic news for us, we may push to ee300. This blue thing, even if it is useless, is linked to the update rate of the rest of the UI
+        within this system for sure.
+		<div class="tinyspace"></div><div class="center resultboxbox"><p class="resultbox">money=10^dx, dx=log10(money), under log dx=money. every dt Count+=dx, every dt uprade is 0.9*dt, 
+            [log_(10/9)60]=39 which is the upgrade limit, where "[]" means "round to nearest integer additively"
+
+        </p></div>
+    </div>
+
+    <div id="stage4" class="pretty gone">
+		We can further push dt quite easily, in fact. After dt=39 where we hit our max 60fps, considering that count grows linearly with respect to time,we can literally just divide production by 0.9, 
+        aka multiply by 10/9 which is 1,1111.. so we can take dt-39 to normalize and then take (10/9) raised to that as a thing to multiply. To make sure it doesnt do anything before, take Max(dt,39)-39.
+		<div class="tinyspace"></div><div class="center resultboxbox"><p class="resultbox">max is 60fps, Dt=(Max(dt,39)-39)^(10/9), count+=bulk*Dt. Under the logarithm this Dt turns into 
+            (Max(dt,39)-39)*log10(10/9), which is super handy for computation! Count+=dx*Dt
+        </p></div>
+        <div class="tinyspace"></div>Lets just take some values from this function and try to model it with another one.<div class="tinyspace"></div>
+        <div class="flexrow">
+            <button class = "flexGrow">x<br>f(x)<br>f(x)/x<br>f(x)/sqrt(x)<br>f(x)/x^(1.5)</button>
+            <button class = "flexGrow">f(1)<br>1<br>1<br>1<br>1</button>
+            <button class = "flexGrow">f(2)<br>2.818<br>1.414<br>2<br>1</button>
+            <button class = "flexGrow">f(3)<br>5.196<br>1.732<br>3<br>1</button>
+            <button class = "flexGrow">f(4)<br>8<br>2<br>4<br>1</button>
+            <button class = "flexGrow">f(5)<br>11.180<br>2.236<br>5<br>1</button>
+            <button class = "flexGrow">f(6)<br>14.697<br>2.449<br>6<br>1</button>
+            <button class = "flexGrow">f(7)<br>18.520<br>2.646<br>7<br>1</button>
+            <button class = "flexGrow">f(8)<br>22.627<br>2.828<br>8<br>1</button>
+            <button class = "flexGrow">f(9)<br>27<br>3<br>9<br>1</button>
+            <button class = "flexGrow">f(10)<br>31.623<br>3.162<br>10<br>1</button>
+        </div><div class="tinyspace"></div>Wow! Logarithms make this so so much easier to deal with... This is fantastic news to say the least.
+        Trivial theorem we will use a lot: f(x)/g(x)=1=>f(x)=g(x). if g(x)=x^(1.5), then f(x)=x^(1/5) 
+        <div class="tinyspace"></div><div class="center resultboxbox"><p class="resultbox">
+            price(polynomial level)=10^(level^1.5), level=log10(money^(2/3)). Taking log10 of everything, price=level^1.5 and level=price^(2/3).
+        </p></div>
+    </div>
+
+    <div id="stage5" class="pretty gone">
+		We have weeded out everything, it is clear we need to upgrade LPS. After lots of thinking, considering here polynomial degree means "level", and these are like prices to upgrade our count and level,
+        the L in LPS is level, and PS, if we think of it as one term, something we would see in an idle game, which is what this resembles, and an area of videogames which often features a lot of precalculus, specially
+        logarythms, exponentials and roots, which matches the descryption so far, we can confidently say this is an idle game and PS will likely mean Price Scaling. We must also consider we got a free LPS=10, and that, we observed,
+        made the formula (within log world) from price=level^1.5 to price=level^1.4. Assuming linearity of the exponent with respect to LPS (because otherwise it would be too complicated for a system like this one, or too rapidly
+        diverging/convering), we can get, if LPS=0, 1.5, if LPS=10, 1.4, so difference is 0.1, across a difference in 10 of LPS, so difference for one LPS is 0.01, so our new formula is:
+		<div class="tinyspace"></div><div class="center resultboxbox"><p class="resultbox">price(+1 polynomial degree)=10^(level^(1.5-LPS/100)), level=log10(money^(1/(1.5-LPS/100))), 
+            with enough LPS this is going to diverge easily. Under log, money=level^(1.5-LPS/100) and level=money^(1/(1.5-LPS/100))
+        </p></div>
+    </div>
+
+    <div id="stage6" class="pretty gone">
+		We got to LPS=150, where the button went grey, because we went too far. price scaling turned into degree=level^0=1, and from there it was trivial to see it diverges instantly.
+        ln(ln(10^10^300))=ln(ln(e^(10^300)ln(10)))=ln((10^300)ln10)=ln(10^300)+ln^2(10)=300ln(10)+ln^2(10)=691.61
+        The formula for dt was far too complicated to derive, though. We will have to postpone this for now. LPS, on the other hand... Well its almost as if it was tetrational so lets start with that
+        <div class="flexrow">
+            <button class = "flexGrow">x<br>f(x+10)<br>f(x-2)<br>log_x(f(x-2))<br>log_x(f(x-2))/sqrt(x)</button>
+            <button class = "flexGrow">1<br>e4.016<br>e0<br>1<br>1</button>
+            <button class = "flexGrow">2<br>e4.288<br>e0.426<br>1.414<br>1</button>
+            <button class = "flexGrow">3<br>e4.555<br>e0.826<br>1.732<br>1</button>
+            <button class = "flexGrow">4<br>e4.816<br>e1.204<br>2<br>1</button>
+            <button class = "flexGrow">5<br>e5.073<br>e1.563<br>2.236<br>1</button>
+            <button class = "flexGrow">6<br>e5.326<br>e1.906<br>2.449<br>1</button>
+            <button class = "flexGrow">7<br>e5.574<br>e2.236<br>2.646<br>1</button>
+            <button class = "flexGrow">8<br>e5.818<br>e2.554<br>2.828<br>1</button>
+            <button class = "flexGrow">9<br>e6.059<br>e2.863<br>3<br>1</button>
+            <button class = "flexGrow">10<br>e6.297<br>e3.162<br>3.162<br>1</button>
+        </div><div class="tinyspace"></div>Well, if log_x(f(x-2))/sqrt(x)=1 then log_x(f(x-2))=sqrt(x) and f(x-2)=x^sqrt(x) so f(x)=(x+2)^sqrt(x+2)
+		<div class="tinyspace"></div><div class="center resultboxbox"><p class="resultbox">
+            LPS=(x+2)^sqrt(x+2), within log10 world. So LPS=10^(x+2)^sqrt(x+2)
+            <br>Final multiplier is ln^2(ee300), which is 691.610
+        </p></div>
+    </div>
+
+    <a href="../Index.html"> My main page, in case you want to go back </a><br>
+    <div><button id="skip" onclick="skip()">eskip</button></div>
+</body>
+<script src="IdleGame.js"></script>

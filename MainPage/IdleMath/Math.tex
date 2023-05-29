@@ -1,0 +1,16 @@
+\[\cos^{-1}\rho:=\alpha,\;I_3=I_{3,1}-I_{3,2},\:I_{3,1}(\rho)=\iiint_D\;d(x,y,z)=
+\int_0^\alpha\int_0^\tau\int_0^1 r^2\sin{\phi}\;drd\theta d\phi=\frac{\tau}{3}\int_0^\alpha \sin{\phi}\;d\phi=\frac{\tau}{3}\Big|-\cos{\phi}\Big|_{\phi=0}^\alpha=\frac{\tau}{3}(1-\rho)\] 
+\[I_{3,2}=\iiint_D |\text{J}|d(r,z,\theta)\;\text{J}\begin{pmatrix} x\\y\\z\end{pmatrix}=
+\begin{bmatrix}r\cos\theta\\r\sin\theta\\\chi\end{bmatrix} \Rightarrow |\text{J}|=
+\begin{vmatrix} \partial_r x & \partial_\chi x & \partial_\theta x \\ \partial_r y & \partial_\chi y & \partial_\theta y \\ \partial_r z & \partial_\chi z & \partial_\theta z\end{vmatrix}=
+r\begin{vmatrix}\cos{\theta} & 0 & -\sin{\theta} \\ \sin{\theta} & 0  & \cos{\theta} \\ 0 & 1 & 0 \end{vmatrix}=
+-r(\cos^2\theta+\sin^2\theta)=-r\]
+\[\frac{-I_{3,2}}{\rho f(\rho)^2}=\int_0^\tau\int_0^1\int_0^\chi r\,drd\chi d\theta=\int_0^\tau\int_0^1 \frac{r^2}{2}\bigg|_{r=0}^\chi\,d\chi d\theta=\frac{1}{2}\int_0^\tau\int_0^1 \chi^2\,d\chi d\theta=
+\frac{1}{2}\int_0^\tau\frac{\chi^3}{3}\bigg|_{\chi=0}^1\, d\theta=\frac{1}{2\cdot 3}\int_0^\tau d\theta=\frac{2\cdot\pi}{2\cdot 3}=\frac{\pi}{3}\]
+\[I_3=I_{3,1}-I_{3,2}=\frac{\pi}{3}(2-2\rho-\rho\sqrt{1-\rho^2}^2)=\frac{\pi}{3}(2-2\rho-\rho+\rho^3)\]
+\[I_2(\rho)=p-2f(\rho)\rho+\cos(p)f(\rho)\]
+
+\[ I_2\colon [0,1]\rightarrow [0,\pi],\; I_2(\rho)=\int_{f(-\rho)}^{f(\rho)}f(x)-\rho\,dx=-2\rho f(\rho)+2\int_0^{f(\rho)} \sqrt{1-x^2}\,dx, x:=\sin{u}\Rightarrow u=\sin^{-1}{u},du=-\cos{x}dx\]
+\[p:=\sin^{-1}{f(\rho)},2\int_0^p\cos(u)^2 du=2\frac{1}{2}\int_0^p 1+\cos(2u)\;du,t=2u\Rightarrow\frac{1}{2}\int_{0}^{2p}1+\cos(t)\;dt=\frac{t+\sin(t)}{2}\bigg|_{t=0}^{2p}=\]
+\[\sin(2p)/2+2p/2=2\sin(p)\cos(p)/2+p=\cos(p)f(\rho)+p\]	
+\[I_3(\rho)=\frac{\pi}{3}(2-3\rho+\rho^3)\]
